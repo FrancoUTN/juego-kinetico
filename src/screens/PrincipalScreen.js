@@ -9,6 +9,7 @@ export default function App() {
     z: 0,
   });
   const [subscription, setSubscription] = useState(null);
+  const [valorDeTop, setValorDeTop] = useState(0);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(1000);
@@ -22,8 +23,9 @@ export default function App() {
     Accelerometer.setUpdateInterval(1000);
     setSubscription(
       Accelerometer.addListener(accelerometerData => {
-        // console.log(accelerometerData);
+        console.log(accelerometerData);
         setData(accelerometerData);
+        setValorDeTop(valorPrevio => valorPrevio + 1)
       })
     );
   };
@@ -38,13 +40,17 @@ export default function App() {
     return () => _unsubscribe();
   }, []);
 
+  const otrosEstilos = {
+    top: valorDeTop
+  };
+
   const { x, y, z } = data;
   return (
     <View style={styles.container}>
       <View style={styles.otroCuadrado}>
 
       </View>
-      <View style={styles.cuadrado}>
+      <View style={[styles.cuadrado, otrosEstilos]}>
 
       </View>
       {/* <Text style={styles.text}>Accelerometer: (in Gs where 1 G = 9.81 m s^-2)</Text>
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     width: 50,
     height: 50,
-    top: 60
+    // top: 60
   },
   otroCuadrado: {
     backgroundColor: '#ada',
