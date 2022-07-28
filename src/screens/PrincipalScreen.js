@@ -10,21 +10,6 @@ import { Colors } from '../constants/styles';
 
 const ladoCuadradoSuperheroe = 75;
 
-const arregloAuxiliar = [
-  {
-    correo: 'asdsa',
-    puntaje: 0
-  },
-  {
-    correo: 'qwesde',
-    puntaje: 3
-  },    
-  {
-    correo: 'Yamilo@jasd.com',
-    puntaje: 1
-  }
-];
-
 export default function App() {
   const [subscription, setSubscription] = useState(null);
   const [valorDeRightYTop, setValorDeRightYTop] = useState({
@@ -41,20 +26,12 @@ export default function App() {
   const [userRef, setUserRef] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [colRef, setColRef] = useState(null);
-  // const [puntajes, setPuntajes] = useState({
-  //   id: '',
-  //   correo: '',
-  //   puntaje: 0
-  // });
   const [puntajes, setPuntajes] = useState([]);
 
-  const _slow = () => {
-    Accelerometer.setUpdateInterval(800);
-  };
-
-  const _fast = () => {
-    Accelerometer.setUpdateInterval(50);
-  };
+  useEffect(() => {
+    _subscribe();
+    return () => _unsubscribe();
+  }, []);
 
   useEffect(() => {
     const db = getFirestore();    
@@ -72,20 +49,9 @@ export default function App() {
     return () => limpiarIntervalo();
   }, []);
   
-  const crearIntervalo = () => {
-    setIntervalo(
-      setInterval(() => {
-        setSeconds(seconds => seconds + 1);
-      }, 1000)
-    );
-  }
+  useEffect(() => {    
+    let isMounted = true;
 
-  const limpiarIntervalo = () => {
-    intervalo && clearInterval(intervalo);
-    setIntervalo(null);
-  };
-
-  useEffect(() => {
     (
       async () => {
         if (dimensiones.ancho > 0 && dimensiones.alto > 0) {
@@ -101,28 +67,44 @@ export default function App() {
             _unsubscribe();
             limpiarIntervalo();
 
-            // const q = query(collection(db, "cities"), where("capital", "==", true));
             const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
             const querySnapshot = await getDocs(q);
-            const arrayDePuntajes = [];
 
-            querySnapshot.forEach((doc) => {
-              const objetoPuntaje = {
-                id: doc.id,
-                correo: doc.data().correo,
-                puntaje: doc.data().puntaje
-              };
+            if (isMounted) {
+              const arrayDePuntajes = [];
 
-              arrayDePuntajes.push(objetoPuntaje);
-            });
+              querySnapshot.forEach((doc) => {
+                const objetoPuntaje = {
+                  id: doc.id,
+                  correo: doc.data().correo,
+                  puntaje: doc.data().puntaje
+                };
 
-            console.log(arrayDePuntajes);
-            setPuntajes(arrayDePuntajes);
+                arrayDePuntajes.push(objetoPuntaje);
+              });
+            
+              setPuntajes(arrayDePuntajes);
+            }
           }
         }
       }
     )();
+
+    return () => { isMounted = false };
   }, [valorDeRightYTop]);
+
+  const crearIntervalo = () => {
+    setIntervalo(
+      setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+      }, 1000)
+    );
+  }
+
+  const limpiarIntervalo = () => {
+    intervalo && clearInterval(intervalo);
+    setIntervalo(null);
+  };
 
   const _subscribe = () => {
     // Accelerometer.setUpdateInterval(2000);
@@ -165,11 +147,6 @@ export default function App() {
     setSubscription(null);
   };
 
-  useEffect(() => {
-    _subscribe();
-    // return () => _unsubscribe();
-  }, []);
-
   const otrosEstilos = {
     right: valorDeRightYTop.right,
     top: valorDeRightYTop.top
@@ -195,9 +172,6 @@ export default function App() {
   }
 
   function renderizarMejorJugador({item}) {
-    // return (
-    //   <Text>Hola</Text>
-    // );
     return (
       <View style={styles.mejorJugadorContainer}>
         <Text style={styles.mejorJugadorTexto}>
