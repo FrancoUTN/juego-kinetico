@@ -51,38 +51,39 @@ export default function App() {
   };
   
   function generarMovimiento2(variable, setter) {
-    const [a, b, c, d, e] = [10, 18, 26, 40, 80];
+    return variable * 60;
+    // const [a, b, c, d, e] = [10, 18, 26, 40, 80];
 
-    if (variable < -0.66) {
-      return -e;
-    }
-    else if (variable < -0.33) {
-      return -d;
-    }
-    else if (variable < -0.16) {
-      return -c;
-    }
-    else if (variable < -0.8) {
-      return -b;
-    }
-    else if (variable < 0) {
-      return -a;
-    }
-    else if (variable < 0.8) {
-      return a;
-    }
-    else if (variable < 0.16) {
-      return b;
-    }
-    else if (variable < 0.33) {
-      return c;
-    }
-    else if (variable < 0.66) {
-      return d;
-    }
-    else {
-      return e;
-    }
+    // if (variable < -0.66) {
+    //   return -e;
+    // }
+    // else if (variable < -0.33) {
+    //   return -d;
+    // }
+    // else if (variable < -0.16) {
+    //   return -c;
+    // }
+    // else if (variable < -0.8) {
+    //   return -b;
+    // }
+    // else if (variable < 0) {
+    //   return -a;
+    // }
+    // else if (variable < 0.8) {
+    //   return a;
+    // }
+    // else if (variable < 0.16) {
+    //   return b;
+    // }
+    // else if (variable < 0.33) {
+    //   return c;
+    // }
+    // else if (variable < 0.66) {
+    //   return d;
+    // }
+    // else {
+    //   return e;
+    // }
   }
 
   function generarMovimiento(variable, setter) {
