@@ -24,9 +24,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
       
       setCredentialsInvalid({
         email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
-        password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
+        password: !passwordIsValid
       });
 
       return;

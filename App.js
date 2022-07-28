@@ -11,10 +11,11 @@ import LoginScreen from './src/screens/LoginScreen';
 import PrincipalScreen from './src/screens/PrincipalScreen';
 import AuthContextProvider, { AuthContext } from './src/store/auth-context';
 import IconButton from './src/components/ui/IconButton';
+import PersonajesScreen from "./src/screens/PersonajesScreen";
+import ModalScreen from "./src/screens/ModalScreen";
 
 // Inicializar App y Auth
 import './src/util/auth'
-import PersonajesScreen from "./src/screens/PersonajesScreen";
 
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
@@ -34,6 +35,15 @@ function AuthStack() {
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Ingreso' }}/>
+      <Stack.Group screenOptions={{
+          presentation: 'modal',
+          headerStyle: { backgroundColor: Colors.error500 },
+          headerTintColor: 'white',
+          contentStyle: { backgroundColor: Colors.error100 },
+        }}f
+      >
+        <Stack.Screen name="MiModal" component={ModalScreen} options={{ title: 'Error' }}/>
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
