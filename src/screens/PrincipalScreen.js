@@ -132,23 +132,9 @@ export default function App() {
     <View style={styles.container}>
 
       <View style={styles.datosContainer}>
-        <Text>
-          {seconds}
+        <Text style={styles.timerTexto}>
+          Puntuación: {seconds}
         </Text>
-        {/* <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
-            <Text>{subscription ? 'On' : 'Off'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={_slow} style={[styles.button, styles.middleButton]}>
-            <Text>Slow</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={_fast} style={styles.button}>
-            <Text>Fast</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={reiniciar} style={styles.button}>
-            <Text>Restart</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
 
       <View
@@ -163,7 +149,7 @@ export default function App() {
           gameOver ?
           <View style={styles.perdisteContainer}>
             <Text style={styles.perdisteTexto}>
-              ¡PERDISTE!
+              ¡Perdiste!
             </Text>
             <Button
               onPress={reiniciar}
@@ -208,10 +194,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  perdisteTexto: {
-    color: Colors.error500,
+  timerTexto: {
+    color: 'white',
     fontSize: 30,
     fontWeight: 'bold'
+  },
+  perdisteTexto: {
+    color: Colors.error500,
+    fontSize: 40,
+    fontWeight: 'bold',
+    margin: 30
   },
   cuadrado: {
     width: ladoCuadradoSuperheroe,
