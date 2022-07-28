@@ -25,12 +25,27 @@ export default function App() {
       Accelerometer.addListener(accelerometerData => {
         // console.log(accelerometerData);
         // setData(accelerometerData);
-        if (accelerometerData.y > 0) {
-          setValorDeTop(valorPrevio => valorPrevio + 2)
+        const {x, y} = accelerometerData;
+
+        if (y < -0.66) {
+          setValorDeTop(valorPrevio => valorPrevio - 3)
         }
-        else if (accelerometerData.y < 0) {
+        else if (y < -0.33) {
           setValorDeTop(valorPrevio => valorPrevio - 2)
         }
+        else if (y < 0) {
+          setValorDeTop(valorPrevio => valorPrevio - 1)
+        }
+        else if (y < 0.33) {
+          setValorDeTop(valorPrevio => valorPrevio + 1)
+        }
+        else if (y < 0.66) {
+          setValorDeTop(valorPrevio => valorPrevio + 2)
+        }
+        else {
+          setValorDeTop(valorPrevio => valorPrevio + 3)
+        }
+
       })
     );
   };
