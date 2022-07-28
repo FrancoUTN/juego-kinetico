@@ -17,6 +17,8 @@ export default function App() {
     alto: 0
   });
   const [gameOver, setGameOver] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [intervalo, setIntervalo] = useState(null);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -24,6 +26,25 @@ export default function App() {
 
   const _fast = () => {
     Accelerometer.setUpdateInterval(50);
+  };
+
+  useEffect(() => {
+    crearIntervalo();
+
+    return () => limpiarIntervalo();
+  }, []);
+  
+  const crearIntervalo = () => {
+    setIntervalo(
+      setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+      }, 1000)
+    );
+  }
+
+  const limpiarIntervalo = () => {
+    intervalo && clearInterval(intervalo);
+    setIntervalo(null);
   };
 
   useEffect(
@@ -36,13 +57,10 @@ export default function App() {
         const xPared = Math.abs(valorDeRightYTop.right) + mitadDelSuperheroe;
         const yPared = Math.abs(valorDeRightYTop.top) + mitadDelSuperheroe;
 
-        // console.log(mitadDelAncho);
-        // console.log(xPared);
-
         if (xPared >= mitadDelAncho || yPared >= mitadDelAlto) {
-          console.log('PERDISTE!');
           setGameOver(true);
           _unsubscribe();
+          limpiarIntervalo();
         }
       }
     }
@@ -57,13 +75,12 @@ export default function App() {
         const nuevoY = generarMovimiento(accelerometerData.y);
 
         setValorDeRightYTop(valorAnterior => {
-          // console.log(valorAnterior);
           return({
             
             right: valorAnterior.right + nuevoX,
             top: valorAnterior.top + nuevoY,
-          })}
-        );
+          });
+        });
 
       })
     );
@@ -107,13 +124,18 @@ export default function App() {
     });
     setGameOver(false);
     _subscribe();
+    crearIntervalo();
+    setSeconds(0);
   }
 
   return (
     <View style={styles.container}>
 
       <View style={styles.datosContainer}>
-        <View style={styles.buttonContainer}>
+        <Text>
+          {seconds}
+        </Text>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
             <Text>{subscription ? 'On' : 'Off'}</Text>
           </TouchableOpacity>
@@ -126,7 +148,7 @@ export default function App() {
           <TouchableOpacity onPress={reiniciar} style={styles.button}>
             <Text>Restart</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       <View
@@ -177,7 +199,7 @@ const styles = StyleSheet.create({
     zIndex: 5
   },
   cuadradoContainer: {
-    flex: 4,
+    flex: 9,
     justifyContent: 'center',
     alignItems: 'center'
   },
