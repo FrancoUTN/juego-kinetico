@@ -93,13 +93,13 @@ export default function App() {
     if (variable > 0 && variable < 0.05) {
       return 20;
     }
-    if (variable > -0.1 && variable < 0) {
-      return -30;
-    }
-    if (variable > 0 && variable < 0.1) {
-      return 30;
-    }
-    return variable * 30;
+    // if (variable > -0.1 && variable < 0) {
+    //   return -30;
+    // }
+    // if (variable > 0 && variable < 0.1) {
+    //   return 30;
+    // }
+    return variable * 100;
   }
 
   const _unsubscribe = () => {
@@ -148,6 +148,11 @@ export default function App() {
         {
           gameOver ?
           <View style={styles.perdisteContainer}>
+            <View>
+              <Text>
+                Mejores jugadores:
+              </Text>
+            </View>
             <Text style={styles.perdisteTexto}>
               ¡Perdiste!
             </Text>
@@ -156,6 +161,13 @@ export default function App() {
             >
               ¿Reintentar?
             </Button>
+            {/* <View style={{margin: 40}}>
+              <Button
+                onPress={reiniciar}
+              >
+                Ver mejores puntuaciones
+              </Button>
+            </View> */}
           </View>
           :
           <View style={[styles.cuadrado, otrosEstilos]}>
