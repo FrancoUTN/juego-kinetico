@@ -9,67 +9,94 @@ export default function App() {
   //   z: 0,
   // });
   const [subscription, setSubscription] = useState(null);
-  const [valorDeRight, setValorDeRight] = useState(0);
-  const [valorDeTop, setValorDeTop] = useState(0);
+  // const [valorDeRight, setValorDeRight] = useState(0);
+  // const [valorDeTop, setValorDeTop] = useState(0);
+  const [valorDeRightYTop, setValorDeRightYTop] = useState({
+    right: 0,
+    top: 0
+  });
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
   };
 
   const _fast = () => {
-    Accelerometer.setUpdateInterval(70);
+    Accelerometer.setUpdateInterval(50);
   };
 
   const _subscribe = () => {
-    Accelerometer.setUpdateInterval(100);
+    Accelerometer.setUpdateInterval(70);
     setSubscription(
       Accelerometer.addListener(accelerometerData => {
-        // console.log(accelerometerData);
-        // setData(accelerometerData);
         const {x, y} = accelerometerData;
 
-        generarMovimiento(x, setValorDeRight);
-        generarMovimiento(y, setValorDeTop);
-        // if (y < -0.66) {
-        //   setValorDeTop(valorPrevio => valorPrevio - 12)
-        // }
-        // else if (y < -0.33) {
-        //   setValorDeTop(valorPrevio => valorPrevio - 7)
-        // }
-        // else if (y < -0.16) {
-        //   setValorDeTop(valorPrevio => valorPrevio - 4)
-        // }
-        // else if (y < 0) {
-        //   setValorDeTop(valorPrevio => valorPrevio - 2)
-        // }
-        // else if (y < 0.16) {
-        //   setValorDeTop(valorPrevio => valorPrevio + 2)
-        // }
-        // else if (y < 0.33) {
-        //   setValorDeTop(valorPrevio => valorPrevio + 4)
-        // }
-        // else if (y < 0.66) {
-        //   setValorDeTop(valorPrevio => valorPrevio + 7)
-        // }
-        // else {
-        //   setValorDeTop(valorPrevio => valorPrevio + 12)
-        // }
+        // generarMovimiento(x, setValorDeRight);
+        // generarMovimiento(y, setValorDeTop);
+        
+        const nuevoX = generarMovimiento2(x);
+        const nuevoY = generarMovimiento2(y);
+
+        setValorDeRightYTop(valorAnterior => {
+          const rightAnterior = valorAnterior.right;
+          const topAnterior = valorAnterior.top;
+
+          return ({
+            right: rightAnterior + nuevoX,
+            top: topAnterior + nuevoY,
+          });
+        });
 
       })
     );
   };
-
-  function generarMovimiento(variable, setter) {
+  
+  function generarMovimiento2(variable, setter) {
     const [a, b, c, d, e] = [10, 18, 26, 40, 80];
 
     if (variable < -0.66) {
-      setter(valorPrevio => valorPrevio - d)
+      return -e;
     }
     else if (variable < -0.33) {
-      setter(valorPrevio => valorPrevio - c)
+      return -d;
     }
     else if (variable < -0.16) {
-      setter(valorPrevio => valorPrevio - b)
+      return -c;
+    }
+    else if (variable < -0.8) {
+      return -b;
+    }
+    else if (variable < 0) {
+      return -a;
+    }
+    else if (variable < 0.8) {
+      return a;
+    }
+    else if (variable < 0.16) {
+      return b;
+    }
+    else if (variable < 0.33) {
+      return c;
+    }
+    else if (variable < 0.66) {
+      return d;
+    }
+    else {
+      return e;
+    }
+  }
+
+  function generarMovimiento(variable, setter) {
+    // const [a, b, c, d, e] = [10, 18, 26, 40, 80];
+    const [a, b, c, d, e] = [1, 2, 4, 8, 16];
+
+    if (variable < -0.66) {
+      setter(valorPrevio => valorPrevio - e)
+    }
+    else if (variable < -0.33) {
+      setter(valorPrevio => valorPrevio - d)
+    }
+    else if (variable < -0.16) {
+      setter(valorPrevio => valorPrevio - c)
     }
     else if (variable < -0.8) {
       setter(valorPrevio => valorPrevio - b)
@@ -81,16 +108,16 @@ export default function App() {
       setter(valorPrevio => valorPrevio + a)
     }
     else if (variable < 0.16) {
-      setter(valorPrevio => valorPrevio + a)
-    }
-    else if (variable < 0.33) {
       setter(valorPrevio => valorPrevio + b)
     }
-    else if (variable < 0.66) {
+    else if (variable < 0.33) {
       setter(valorPrevio => valorPrevio + c)
     }
-    else {
+    else if (variable < 0.66) {
       setter(valorPrevio => valorPrevio + d)
+    }
+    else {
+      setter(valorPrevio => valorPrevio + e)
     }
   }
 
@@ -104,14 +131,22 @@ export default function App() {
     return () => _unsubscribe();
   }, []);
 
+  // const otrosEstilos = {
+  //   right: valorDeRight,
+  //   top: valorDeTop
+  // };
   const otrosEstilos = {
-    right: valorDeRight,
-    top: valorDeTop
+    right: valorDeRightYTop.right,
+    top: valorDeRightYTop.top
   };
 
   function reiniciar() {
-    setValorDeRight(0);
-    setValorDeTop(0);
+    // setValorDeRight(0);
+    // setValorDeTop(0);
+    setValorDeRightYTop({
+      right: 0,
+      top: 0
+    });
   }
 
   // const { x, y, z } = data;
