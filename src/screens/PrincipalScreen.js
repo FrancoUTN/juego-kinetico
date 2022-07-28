@@ -10,7 +10,7 @@ import { Colors } from '../constants/styles';
 
 const ladoCuadradoSuperheroe = 75;
 
-export default function App() {
+export default function Principal({route}) {
   const [subscription, setSubscription] = useState(null);
   const [valorDeRightYTop, setValorDeRightYTop] = useState({
     right: 0,
@@ -257,7 +257,8 @@ export default function App() {
           <View style={[styles.cuadrado, otrosEstilos]}>
             <Image            
               style={styles.superheroe}
-              source={require('../../assets/batman.png')}
+              // source={require('../../assets/batman.png')}
+              source={route.params.superheroe}
             />
           </View>
         }
