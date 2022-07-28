@@ -22,7 +22,7 @@ export default function App() {
     Accelerometer.setUpdateInterval(1000);
     setSubscription(
       Accelerometer.addListener(accelerometerData => {
-        console.log(accelerometerData);
+        // console.log(accelerometerData);
         setData(accelerometerData);
       })
     );
