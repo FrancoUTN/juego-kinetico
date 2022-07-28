@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
-import { getFirestore, getDoc, doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 import Button from '../components/ui/Button';
@@ -40,6 +40,7 @@ export default function App() {
   const [intervalo, setIntervalo] = useState(null);
   const [userRef, setUserRef] = useState(null);
   const [cargando, setCargando] = useState(false);
+  const [colRef, setColRef] = useState(null);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -56,6 +57,7 @@ export default function App() {
     const userRef = doc(db, 'usuarios', uid);
 
     setUserRef(userRef);
+    setColRef(collection(db, 'usuarios'));
   }, []);
 
   useEffect(() => {
@@ -77,24 +79,35 @@ export default function App() {
     setIntervalo(null);
   };
 
-  useEffect(
-    () => {
-      if (dimensiones.ancho > 0 && dimensiones.alto > 0) {
-        const mitadDelAncho = dimensiones.ancho / 2;
-        const mitadDelAlto = dimensiones.alto / 2;
-        // "- 5" porque el ícono tiene áreas ligeramente menores al cuadrado total
-        const mitadDelSuperheroe = (ladoCuadradoSuperheroe - 15) / 2;
-        const xPared = Math.abs(valorDeRightYTop.right) + mitadDelSuperheroe;
-        const yPared = Math.abs(valorDeRightYTop.top) + mitadDelSuperheroe;
+  useEffect(() => {
+    (
+      async () => {
+        if (dimensiones.ancho > 0 && dimensiones.alto > 0) {
+          const mitadDelAncho = dimensiones.ancho / 2;
+          const mitadDelAlto = dimensiones.alto / 2;
+          // "- 5" porque el ícono tiene áreas ligeramente menores al cuadrado total
+          const mitadDelSuperheroe = (ladoCuadradoSuperheroe - 15) / 2;
+          const xPared = Math.abs(valorDeRightYTop.right) + mitadDelSuperheroe;
+          const yPared = Math.abs(valorDeRightYTop.top) + mitadDelSuperheroe;
 
-        if (xPared >= mitadDelAncho || yPared >= mitadDelAlto) {
-          setGameOver(true);
-          _unsubscribe();
-          limpiarIntervalo();
+          if (xPared >= mitadDelAncho || yPared >= mitadDelAlto) {
+            setGameOver(true);
+            _unsubscribe();
+            limpiarIntervalo();
+
+            // const q = query(collection(db, "cities"), where("capital", "==", true));
+            const q = query(colRef);
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+            });
+          }
         }
       }
-    }
-  , [valorDeRightYTop]);
+    )();
+  }, [valorDeRightYTop]);
 
   const _subscribe = () => {
     // Accelerometer.setUpdateInterval(2000);
