@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import Button from '../components/ui/Button';
+import { Colors } from '../constants/styles';
 
 const ladoCuadradoSuperheroe = 75;
 
@@ -14,6 +16,7 @@ export default function App() {
     ancho: 0,
     alto: 0
   });
+  const [gameOver, setGameOver] = useState(false);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -38,6 +41,7 @@ export default function App() {
 
         if (xPared >= mitadDelAncho || yPared >= mitadDelAlto) {
           console.log('PERDISTE!');
+          setGameOver(true);
           _unsubscribe();
         }
       }
@@ -101,6 +105,8 @@ export default function App() {
       right: 0,
       top: 0
     });
+    setGameOver(false);
+    _subscribe();
   }
 
   return (
@@ -131,12 +137,26 @@ export default function App() {
           console.log(event.nativeEvent.layout);
         }}
       >
-        <View style={[styles.cuadrado, otrosEstilos]}>
-          <Image            
-            style={styles.superheroe}
-            source={require('../../assets/batman.png')}
-          />
-        </View>
+        {
+          gameOver ?
+          <View style={styles.perdisteContainer}>
+            <Text style={styles.perdisteTexto}>
+              ¡PERDISTE!
+            </Text>
+            <Button
+              onPress={reiniciar}
+            >
+              ¿Reintentar?
+            </Button>
+          </View>
+          :
+          <View style={[styles.cuadrado, otrosEstilos]}>
+            <Image            
+              style={styles.superheroe}
+              source={require('../../assets/batman.png')}
+            />
+          </View>
+        }
       </View>
 
     </View>
@@ -153,12 +173,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#52A35B',
+    backgroundColor: Colors.primary800,
+    zIndex: 5
   },
   cuadradoContainer: {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  perdisteContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  perdisteTexto: {
+    color: Colors.error500,
+    fontSize: 30,
+    fontWeight: 'bold'
   },
   cuadrado: {
     width: ladoCuadradoSuperheroe,

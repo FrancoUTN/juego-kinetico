@@ -1,18 +1,17 @@
-// export const Colors = {
-//   primary100: '#92C899',
-//   primary500: '#52A35B',
-//   primary800: '#2C5530',
-//   error100: '#FF3333',
-//   error500: '#FF0000',
-// }
-
 export const Colors = {
-  primary100: '#92C899',
-  primary500: '#2C5530',
-  primary800: '#52A35B',
-  secondary300: '#E9C46A',
-  error100: '#FF3333',
-  error500: '#FF0000',
-  pps4a: '#5CF64A',
-  pps4b: '#023618',
+  primary100: '#397367',
+  primary500: '#0D1821',
+  primary800: '#0079EF',
+  secondary1: '#F9C80E',
+  error100: '#F04248',
+  error500: '#ED1D24',
 }
+
+// export const Colors = {
+//   primary1: '#0079EF',
+//   primary2: '#0D1821',
+//   secondary1: '#F9C80E',
+//   secondary2: '#FF9505',
+//   error1: '#ED1D24',
+//   error2: '#F04248',
+// }
