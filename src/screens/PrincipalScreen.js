@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 
 export default function App() {
@@ -9,8 +9,8 @@ export default function App() {
   //   z: 0,
   // });
   const [subscription, setSubscription] = useState(null);
-  const [valorDeTop, setValorDeTop] = useState(0);
   const [valorDeRight, setValorDeRight] = useState(0);
+  const [valorDeTop, setValorDeTop] = useState(0);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -60,7 +60,7 @@ export default function App() {
   };
 
   function generarMovimiento(variable, setter) {
-    const [a, b, c, d] = [4, 8, 12, 16];
+    const [a, b, c, d, e] = [10, 18, 26, 40, 80];
 
     if (variable < -0.66) {
       setter(valorPrevio => valorPrevio - d)
@@ -71,8 +71,14 @@ export default function App() {
     else if (variable < -0.16) {
       setter(valorPrevio => valorPrevio - b)
     }
+    else if (variable < -0.8) {
+      setter(valorPrevio => valorPrevio - b)
+    }
     else if (variable < 0) {
       setter(valorPrevio => valorPrevio - a)
+    }
+    else if (variable < 0.8) {
+      setter(valorPrevio => valorPrevio + a)
     }
     else if (variable < 0.16) {
       setter(valorPrevio => valorPrevio + a)
@@ -104,6 +110,7 @@ export default function App() {
   };
 
   function reiniciar() {
+    setValorDeRight(0);
     setValorDeTop(0);
   }
 
@@ -133,9 +140,13 @@ export default function App() {
       </View>
 
       <View style={styles.cuadradoContainer}>
-        <View style={styles.otroCuadrado}>
-        </View>
+        {/* <View style={styles.otroCuadrado}></View> */}
         <View style={[styles.cuadrado, otrosEstilos]}>
+          <Image            
+            style={styles.superheroe}
+            source={require('../../assets/spiderman.png')}
+            // resizeMode="contain"
+          />
         </View>
       </View>
 
@@ -164,20 +175,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
+    backgroundColor: '#52A35B',
   },
   cuadradoContainer: {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#a0a',
+    // backgroundColor: '#a0a',
     // alignItems: 'center'
   },
   cuadrado: {
-    backgroundColor: '#eee',
+    // backgroundColor: '#eee',
     width: lado,
-    height: lado,
-    // top: 60
+    height: lado
   },
   otroCuadrado: {
     backgroundColor: '#ada',
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    marginTop: 15,
+    marginTop: 0
   },
   button: {
     flex: 1,
@@ -205,4 +216,9 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderColor: '#ccc',
   },
+  superheroe: {
+    flex: 1,
+    width: undefined,
+    height: undefined
+  }
 });
