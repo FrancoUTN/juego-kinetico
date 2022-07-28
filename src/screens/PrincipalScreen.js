@@ -41,6 +41,12 @@ export default function App() {
   const [userRef, setUserRef] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [colRef, setColRef] = useState(null);
+  // const [puntajes, setPuntajes] = useState({
+  //   id: '',
+  //   correo: '',
+  //   puntaje: 0
+  // });
+  const [puntajes, setPuntajes] = useState([]);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -97,12 +103,21 @@ export default function App() {
 
             // const q = query(collection(db, "cities"), where("capital", "==", true));
             const q = query(colRef);
-
             const querySnapshot = await getDocs(q);
+            const arrayDePuntajes = [];
+
             querySnapshot.forEach((doc) => {
-              // doc.data() is never undefined for query doc snapshots
-              console.log(doc.id, " => ", doc.data());
+              const objetoPuntaje = {
+                id: doc.id,
+                correo: doc.data().correo,
+                puntaje: doc.data().puntaje
+              };
+
+              arrayDePuntajes.push(objetoPuntaje);
             });
+
+            console.log(arrayDePuntajes);
+            setPuntajes(arrayDePuntajes);
           }
         }
       }
@@ -189,7 +204,7 @@ export default function App() {
           {item.correo}:
         </Text>
         <Text style={styles.mejorJugadorTexto}>
-          {item.puntaje} puntos
+          {item.puntaje ? item.puntaje : 0} puntos
         </Text>
       </View>
     );
@@ -219,7 +234,7 @@ export default function App() {
                 Mejores jugadores
               </Text>
               <FlatList
-                data={arregloAuxiliar}
+                data={puntajes}
                 renderItem={renderizarMejorJugador}
                 keyExtracor={item => item.correo}
               />
