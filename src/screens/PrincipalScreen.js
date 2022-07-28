@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import { getFirestore, getDoc, doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
 import Button from '../components/ui/Button';
 import { Colors } from '../constants/styles';
+
 
 const ladoCuadradoSuperheroe = 75;
 
@@ -19,6 +23,8 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [intervalo, setIntervalo] = useState(null);
+  const [userRef, setUserRef] = useState(null);
+  const [cargando, setCargando] = useState(false);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -27,6 +33,15 @@ export default function App() {
   const _fast = () => {
     Accelerometer.setUpdateInterval(50);
   };
+
+  useEffect(() => {
+    const db = getFirestore();    
+    const auth = getAuth();
+    const uid = auth.currentUser.uid;
+    const userRef = doc(db, 'usuarios', uid);
+
+    setUserRef(userRef);
+  }, []);
 
   useEffect(() => {
     crearIntervalo();
@@ -128,6 +143,14 @@ export default function App() {
     setSeconds(0);
   }
 
+  async function guardarResultado() {
+    setCargando(true);
+
+    await updateDoc(userRef, {
+      puntaje: seconds
+    });
+  }
+
   return (
     <View style={styles.container}>
 
@@ -142,7 +165,6 @@ export default function App() {
         onLayout={(event) => {
           const {width, height} = event.nativeEvent.layout;
           setDimensiones({ancho: width, alto: height});
-          console.log(event.nativeEvent.layout);
         }}
       >
         {
@@ -161,13 +183,13 @@ export default function App() {
             >
               ¿Reintentar?
             </Button>
-            {/* <View style={{margin: 40}}>
+            <View style={{margin: 40}}>
               <Button
-                onPress={reiniciar}
+                onPress={guardarResultado}
               >
-                Ver mejores puntuaciones
+                Guardar resultado
               </Button>
-            </View> */}
+            </View>
           </View>
           :
           <View style={[styles.cuadrado, otrosEstilos]}>
