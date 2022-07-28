@@ -103,7 +103,7 @@ export default function App() {
 }
 
 function AnimatedSplashScreen({ children, image }) {
-  const animation = useMemo(() => new Animated.Value(1), []);
+  const animation = useMemo(() => new Animated.Value(0), []);
   const [isAppReady, setAppReady] = useState(false);
   const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
 
@@ -120,7 +120,7 @@ function AnimatedSplashScreen({ children, image }) {
   useEffect(() => {
     if (isAppReady) {
       Animated.timing(animation, {
-        toValue: 8,
+        toValue: 1000,
         duration: 700,
         useNativeDriver: true,
       }).start(() => setAnimationComplete(true));
@@ -148,7 +148,7 @@ function AnimatedSplashScreen({ children, image }) {
               resizeMode: Constants.manifest.splash.resizeMode || "contain",
               transform: [
                 {
-                  scale: animation,
+                  translateX: animation,
                 },
               ],
             }}
