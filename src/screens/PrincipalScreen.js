@@ -17,11 +17,11 @@ export default function App() {
   };
 
   const _fast = () => {
-    Accelerometer.setUpdateInterval(50);
+    Accelerometer.setUpdateInterval(70);
   };
 
   const _subscribe = () => {
-    // Accelerometer.setUpdateInterval(100);
+    Accelerometer.setUpdateInterval(100);
     setSubscription(
       Accelerometer.addListener(accelerometerData => {
         // console.log(accelerometerData);
@@ -59,30 +59,32 @@ export default function App() {
     );
   };
 
-  function generarMovimiento(variable, setter) {    
+  function generarMovimiento(variable, setter) {
+    const [a, b, c, d] = [4, 8, 12, 16];
+
     if (variable < -0.66) {
-      setter(valorPrevio => valorPrevio - 12)
+      setter(valorPrevio => valorPrevio - d)
     }
     else if (variable < -0.33) {
-      setter(valorPrevio => valorPrevio - 7)
+      setter(valorPrevio => valorPrevio - c)
     }
     else if (variable < -0.16) {
-      setter(valorPrevio => valorPrevio - 4)
+      setter(valorPrevio => valorPrevio - b)
     }
     else if (variable < 0) {
-      setter(valorPrevio => valorPrevio - 2)
+      setter(valorPrevio => valorPrevio - a)
     }
     else if (variable < 0.16) {
-      setter(valorPrevio => valorPrevio + 2)
+      setter(valorPrevio => valorPrevio + a)
     }
     else if (variable < 0.33) {
-      setter(valorPrevio => valorPrevio + 4)
+      setter(valorPrevio => valorPrevio + b)
     }
     else if (variable < 0.66) {
-      setter(valorPrevio => valorPrevio + 7)
+      setter(valorPrevio => valorPrevio + c)
     }
     else {
-      setter(valorPrevio => valorPrevio + 12)
+      setter(valorPrevio => valorPrevio + d)
     }
   }
 
@@ -150,7 +152,7 @@ function round(n) {
   // return n;
 }
 
-const lado = 30;
+const lado = 50;
 
 const styles = StyleSheet.create({
   container: {
