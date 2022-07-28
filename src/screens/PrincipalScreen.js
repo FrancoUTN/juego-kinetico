@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { getFirestore, doc, updateDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -68,22 +68,12 @@ export default function App() {
             limpiarIntervalo();
 
             const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
+            setCargando(true);
             const querySnapshot = await getDocs(q);
 
             if (isMounted) {
-              const arrayDePuntajes = [];
-
-              querySnapshot.forEach((doc) => {
-                const objetoPuntaje = {
-                  id: doc.id,
-                  correo: doc.data().correo,
-                  puntaje: doc.data().puntaje
-                };
-
-                arrayDePuntajes.push(objetoPuntaje);
-              });
-            
-              setPuntajes(arrayDePuntajes);
+              traerListado(querySnapshot);
+              setCargando(false);
             }
           }
         }
@@ -92,6 +82,22 @@ export default function App() {
 
     return () => { isMounted = false };
   }, [valorDeRightYTop]);
+
+  async function traerListado(querySnapshot) {
+    const arrayDePuntajes = [];
+
+    querySnapshot.forEach((doc) => {
+      const objetoPuntaje = {
+        id: doc.id,
+        correo: doc.data().correo,
+        puntaje: doc.data().puntaje
+      };
+
+      arrayDePuntajes.push(objetoPuntaje);
+    });
+  
+    setPuntajes(arrayDePuntajes);
+  }
 
   const crearIntervalo = () => {
     setIntervalo(
@@ -169,6 +175,12 @@ export default function App() {
     await updateDoc(userRef, {
       puntaje: seconds
     });
+
+    const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
+    const querySnapshot = await getDocs(q);
+
+    traerListado(querySnapshot);    
+    setCargando(false);
   }
 
   function renderizarMejorJugador({item}) {
@@ -206,12 +218,22 @@ export default function App() {
             <View style={styles.listadoContainer}>
               <Text style={styles.mejoresJugadoresTitulo}>
                 Mejores jugadores
-              </Text>
-              <FlatList
-                data={puntajes}
-                renderItem={renderizarMejorJugador}
-                keyExtracor={item => item.correo}
-              />
+              </Text>              
+              {
+                cargando ?
+                <View style={styles.containerGenerico}>
+                  <ActivityIndicator
+                    size="large"
+                    color="white"
+                  />
+                </View>
+                :
+                <FlatList
+                  data={puntajes}
+                  renderItem={renderizarMejorJugador}
+                  keyExtracor={item => item.correo}
+                />
+              }
             </View>
             <View style={styles.perdisteContainer}>
               <Text style={styles.perdisteTexto}>
