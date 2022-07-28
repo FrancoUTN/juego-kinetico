@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import AuthForm from './AuthForm';
 import { Colors } from '../../constants/styles';
+import { useNavigation } from '@react-navigation/native';
 
 function AuthContent({ isLogin, onAuthenticate }) {
+  const navigation = useNavigation();
+
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false
@@ -19,9 +22,12 @@ function AuthContent({ isLogin, onAuthenticate }) {
     const emailIsValid = email.includes('@');
     const passwordIsValid = password.length >= 6;
 
-    if ( !emailIsValid || !passwordIsValid ) {
-      Alert.alert('Invalid input', 'Please check your entered credentials.');
-      
+    if ( !emailIsValid || !passwordIsValid ) {      
+      navigation.navigate({
+        name: 'MiModal',
+        params: { mensajeError: 'Datos inválidos.'}
+      });
+
       setCredentialsInvalid({
         email: !emailIsValid,
         password: !passwordIsValid
