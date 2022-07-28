@@ -121,7 +121,7 @@ function AnimatedSplashScreen({ children, image }) {
     if (isAppReady) {
       Animated.timing(animation, {
         toValue: 1000,
-        duration: 700,
+        duration: 1200,
         useNativeDriver: true,
       }).start(() => setAnimationComplete(true));
     }
@@ -137,7 +137,6 @@ function AnimatedSplashScreen({ children, image }) {
             StyleSheet.absoluteFill,
             {
               backgroundColor: Constants.manifest.splash.backgroundColor,
-              // opacity: animation,
             },
           ]}
         >
