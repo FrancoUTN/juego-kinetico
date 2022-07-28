@@ -3,14 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 
 export default function App() {
-  // const [data, setData] = useState({
-  //   x: 0,
-  //   y: 0,
-  //   z: 0,
-  // });
   const [subscription, setSubscription] = useState(null);
-  // const [valorDeRight, setValorDeRight] = useState(0);
-  // const [valorDeTop, setValorDeTop] = useState(0);
   const [valorDeRightYTop, setValorDeRightYTop] = useState({
     right: 0,
     top: 0
@@ -27,99 +20,33 @@ export default function App() {
   const _subscribe = () => {
     Accelerometer.setUpdateInterval(70);
     setSubscription(
-      Accelerometer.addListener(accelerometerData => {
-        const {x, y} = accelerometerData;
+      Accelerometer.addListener(accelerometerData => {        
+        const nuevoX = generarMovimiento(accelerometerData.x);
+        const nuevoY = generarMovimiento(accelerometerData.y);
 
-        // generarMovimiento(x, setValorDeRight);
-        // generarMovimiento(y, setValorDeTop);
-        
-        const nuevoX = generarMovimiento2(x);
-        const nuevoY = generarMovimiento2(y);
-
-        setValorDeRightYTop(valorAnterior => {
-          const rightAnterior = valorAnterior.right;
-          const topAnterior = valorAnterior.top;
-
-          return ({
-            right: rightAnterior + nuevoX,
-            top: topAnterior + nuevoY,
-          });
-        });
-
+        setValorDeRightYTop(valorAnterior => ({
+            right: valorAnterior.right + nuevoX,
+            top: valorAnterior.top + nuevoY,
+          })
+        );
       })
     );
   };
-  
-  function generarMovimiento2(variable, setter) {
-    return variable * 60;
-    // const [a, b, c, d, e] = [10, 18, 26, 40, 80];
 
-    // if (variable < -0.66) {
-    //   return -e;
-    // }
-    // else if (variable < -0.33) {
-    //   return -d;
-    // }
-    // else if (variable < -0.16) {
-    //   return -c;
-    // }
-    // else if (variable < -0.8) {
-    //   return -b;
-    // }
-    // else if (variable < 0) {
-    //   return -a;
-    // }
-    // else if (variable < 0.8) {
-    //   return a;
-    // }
-    // else if (variable < 0.16) {
-    //   return b;
-    // }
-    // else if (variable < 0.33) {
-    //   return c;
-    // }
-    // else if (variable < 0.66) {
-    //   return d;
-    // }
-    // else {
-    //   return e;
-    // }
-  }
-
-  function generarMovimiento(variable, setter) {
-    // const [a, b, c, d, e] = [10, 18, 26, 40, 80];
-    const [a, b, c, d, e] = [1, 2, 4, 8, 16];
-
-    if (variable < -0.66) {
-      setter(valorPrevio => valorPrevio - e)
+  function generarMovimiento(variable) {
+    if (variable > -0.05 && variable < 0.05) {
+      return variable * 400;
     }
-    else if (variable < -0.33) {
-      setter(valorPrevio => valorPrevio - d)
+    if (variable > -0.1 && variable < 0.1) {
+      return variable * 200;
     }
-    else if (variable < -0.16) {
-      setter(valorPrevio => valorPrevio - c)
+    if (variable > -0.15 && variable < 0.15) {
+      return variable * 100;
     }
-    else if (variable < -0.8) {
-      setter(valorPrevio => valorPrevio - b)
+    if (variable > -0.20 && variable < 0.20) {
+      return variable * 75;
     }
-    else if (variable < 0) {
-      setter(valorPrevio => valorPrevio - a)
-    }
-    else if (variable < 0.8) {
-      setter(valorPrevio => valorPrevio + a)
-    }
-    else if (variable < 0.16) {
-      setter(valorPrevio => valorPrevio + b)
-    }
-    else if (variable < 0.33) {
-      setter(valorPrevio => valorPrevio + c)
-    }
-    else if (variable < 0.66) {
-      setter(valorPrevio => valorPrevio + d)
-    }
-    else {
-      setter(valorPrevio => valorPrevio + e)
-    }
+    return variable * 50;
   }
 
   const _unsubscribe = () => {
@@ -132,33 +59,22 @@ export default function App() {
     return () => _unsubscribe();
   }, []);
 
-  // const otrosEstilos = {
-  //   right: valorDeRight,
-  //   top: valorDeTop
-  // };
   const otrosEstilos = {
     right: valorDeRightYTop.right,
     top: valorDeRightYTop.top
   };
 
   function reiniciar() {
-    // setValorDeRight(0);
-    // setValorDeTop(0);
     setValorDeRightYTop({
       right: 0,
       top: 0
     });
   }
 
-  // const { x, y, z } = data;
   return (
     <View style={styles.container}>
 
       <View style={styles.datosContainer}>
-        {/* <Text style={styles.text}>Accelerometer: (in Gs where 1 G = 9.81 m s^-2)</Text>
-        <Text style={styles.text}>
-          x: {round(x)} y: {round(y)} z: {round(z)}
-        </Text> */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
             <Text>{subscription ? 'On' : 'Off'}</Text>
@@ -176,12 +92,10 @@ export default function App() {
       </View>
 
       <View style={styles.cuadradoContainer}>
-        {/* <View style={styles.otroCuadrado}></View> */}
         <View style={[styles.cuadrado, otrosEstilos]}>
           <Image            
             style={styles.superheroe}
             source={require('../../assets/spiderman.png')}
-            // resizeMode="contain"
           />
         </View>
       </View>
@@ -190,22 +104,12 @@ export default function App() {
   );
 }
 
-function round(n) {
-  if (!n) {
-    return 0;
-  }
-  // return Math.floor(n * 100) / 100;
-  return Math.floor(n * 100);
-  // return n;
-}
-
 const lado = 50;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center'
   },
   datosContainer: {
     flex: 1,
@@ -217,20 +121,11 @@ const styles = StyleSheet.create({
   cuadradoContainer: {
     flex: 4,
     justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: '#a0a',
-    // alignItems: 'center'
+    alignItems: 'center'
   },
   cuadrado: {
-    // backgroundColor: '#eee',
     width: lado,
     height: lado
-  },
-  otroCuadrado: {
-    backgroundColor: '#ada',
-    width: lado,
-    height: lado,
-    position: 'absolute',
   },
   text: {
     textAlign: 'center',
