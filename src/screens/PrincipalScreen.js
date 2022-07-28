@@ -34,19 +34,19 @@ export default function App() {
   };
 
   function generarMovimiento(variable) {
-    if (variable > -0.05 && variable < 0.05) {
-      return variable * 400;
+    if (variable > -0.05 && variable < 0) {
+      return -20;
     }
-    if (variable > -0.1 && variable < 0.1) {
-      return variable * 200;
+    if (variable > 0 && variable < 0.05) {
+      return 20;
     }
-    if (variable > -0.15 && variable < 0.15) {
-      return variable * 100;
+    if (variable > -0.1 && variable < 0) {
+      return -30;
     }
-    if (variable > -0.20 && variable < 0.20) {
-      return variable * 75;
+    if (variable > 0 && variable < 0.1) {
+      return 30;
     }
-    return variable * 50;
+    return variable * 30;
   }
 
   const _unsubscribe = () => {
@@ -104,7 +104,7 @@ export default function App() {
   );
 }
 
-const lado = 50;
+const lado = 75;
 
 const styles = StyleSheet.create({
   container: {
