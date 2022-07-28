@@ -10,6 +10,7 @@ export default function App() {
   // });
   const [subscription, setSubscription] = useState(null);
   const [valorDeTop, setValorDeTop] = useState(0);
+  const [valorDeRight, setValorDeRight] = useState(0);
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(800);
@@ -27,28 +28,63 @@ export default function App() {
         // setData(accelerometerData);
         const {x, y} = accelerometerData;
 
-        if (y < -0.66) {
-          setValorDeTop(valorPrevio => valorPrevio - 3)
-        }
-        else if (y < -0.33) {
-          setValorDeTop(valorPrevio => valorPrevio - 2)
-        }
-        else if (y < 0) {
-          setValorDeTop(valorPrevio => valorPrevio - 1)
-        }
-        else if (y < 0.33) {
-          setValorDeTop(valorPrevio => valorPrevio + 1)
-        }
-        else if (y < 0.66) {
-          setValorDeTop(valorPrevio => valorPrevio + 2)
-        }
-        else {
-          setValorDeTop(valorPrevio => valorPrevio + 3)
-        }
+        generarMovimiento(x, setValorDeRight);
+        generarMovimiento(y, setValorDeTop);
+        // if (y < -0.66) {
+        //   setValorDeTop(valorPrevio => valorPrevio - 12)
+        // }
+        // else if (y < -0.33) {
+        //   setValorDeTop(valorPrevio => valorPrevio - 7)
+        // }
+        // else if (y < -0.16) {
+        //   setValorDeTop(valorPrevio => valorPrevio - 4)
+        // }
+        // else if (y < 0) {
+        //   setValorDeTop(valorPrevio => valorPrevio - 2)
+        // }
+        // else if (y < 0.16) {
+        //   setValorDeTop(valorPrevio => valorPrevio + 2)
+        // }
+        // else if (y < 0.33) {
+        //   setValorDeTop(valorPrevio => valorPrevio + 4)
+        // }
+        // else if (y < 0.66) {
+        //   setValorDeTop(valorPrevio => valorPrevio + 7)
+        // }
+        // else {
+        //   setValorDeTop(valorPrevio => valorPrevio + 12)
+        // }
 
       })
     );
   };
+
+  function generarMovimiento(variable, setter) {    
+    if (variable < -0.66) {
+      setter(valorPrevio => valorPrevio - 12)
+    }
+    else if (variable < -0.33) {
+      setter(valorPrevio => valorPrevio - 7)
+    }
+    else if (variable < -0.16) {
+      setter(valorPrevio => valorPrevio - 4)
+    }
+    else if (variable < 0) {
+      setter(valorPrevio => valorPrevio - 2)
+    }
+    else if (variable < 0.16) {
+      setter(valorPrevio => valorPrevio + 2)
+    }
+    else if (variable < 0.33) {
+      setter(valorPrevio => valorPrevio + 4)
+    }
+    else if (variable < 0.66) {
+      setter(valorPrevio => valorPrevio + 7)
+    }
+    else {
+      setter(valorPrevio => valorPrevio + 12)
+    }
+  }
 
   const _unsubscribe = () => {
     subscription && subscription.remove();
@@ -61,6 +97,7 @@ export default function App() {
   }, []);
 
   const otrosEstilos = {
+    right: valorDeRight,
     top: valorDeTop
   };
 
@@ -113,7 +150,7 @@ function round(n) {
   // return n;
 }
 
-const lado = 15;
+const lado = 30;
 
 const styles = StyleSheet.create({
   container: {
