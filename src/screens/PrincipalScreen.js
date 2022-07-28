@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
-import { getFirestore, doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 import Button from '../components/ui/Button';
@@ -102,7 +102,7 @@ export default function App() {
             limpiarIntervalo();
 
             // const q = query(collection(db, "cities"), where("capital", "==", true));
-            const q = query(colRef);
+            const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
             const querySnapshot = await getDocs(q);
             const arrayDePuntajes = [];
 
@@ -167,7 +167,7 @@ export default function App() {
 
   useEffect(() => {
     _subscribe();
-    return () => _unsubscribe();
+    // return () => _unsubscribe();
   }, []);
 
   const otrosEstilos = {
