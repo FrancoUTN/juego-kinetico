@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { getFirestore, getDoc, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -9,6 +9,21 @@ import { Colors } from '../constants/styles';
 
 
 const ladoCuadradoSuperheroe = 75;
+
+const arregloAuxiliar = [
+  {
+    correo: 'asdsa',
+    puntaje: 0
+  },
+  {
+    correo: 'qwesde',
+    puntaje: 3
+  },    
+  {
+    correo: 'Yamilo@jasd.com',
+    puntaje: 1
+  }
+];
 
 export default function App() {
   const [subscription, setSubscription] = useState(null);
@@ -151,6 +166,22 @@ export default function App() {
     });
   }
 
+  function renderizarMejorJugador({item}) {
+    // return (
+    //   <Text>Hola</Text>
+    // );
+    return (
+      <View style={styles.mejorJugadorContainer}>
+        <Text style={styles.mejorJugadorTexto}>
+          {item.correo}:
+        </Text>
+        <Text style={styles.mejorJugadorTexto}>
+          {item.puntaje} puntos
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
 
@@ -169,25 +200,32 @@ export default function App() {
       >
         {
           gameOver ?
-          <View style={styles.perdisteContainer}>
-            <View>
-              <Text>
-                Mejores jugadores:
+          <View style={styles.containerGenerico}>
+            <View style={styles.listadoContainer}>
+              <Text style={styles.mejoresJugadoresTitulo}>
+                Mejores jugadores
               </Text>
+              <FlatList
+                data={arregloAuxiliar}
+                renderItem={renderizarMejorJugador}
+                keyExtracor={item => item.correo}
+              />
             </View>
-            <Text style={styles.perdisteTexto}>
-              ¡Perdiste!
-            </Text>
-            <Button
-              onPress={reiniciar}
-            >
-              ¿Reintentar?
-            </Button>
-            <View style={{margin: 40}}>
+            <View style={styles.perdisteContainer}>
+              <Text style={styles.perdisteTexto}>
+                ¡Perdiste!
+              </Text>
+              <View style={{marginBottom: 40}}>
+                <Button
+                  onPress={guardarResultado}
+                >
+                  Guardar resultado
+                </Button>
+              </View>
               <Button
-                onPress={guardarResultado}
+                onPress={reiniciar}
               >
-                Guardar resultado
+                ¿Reintentar?
               </Button>
             </View>
           </View>
@@ -210,6 +248,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  containerGenerico: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   datosContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -224,9 +267,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   perdisteContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    flex: 2,
+    alignItems: 'center',
   },
   timerTexto: {
     color: 'white',
@@ -235,7 +277,7 @@ const styles = StyleSheet.create({
   },
   perdisteTexto: {
     color: Colors.error500,
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
     margin: 30
   },
@@ -267,5 +309,27 @@ const styles = StyleSheet.create({
     flex: 1,
     width: undefined,
     height: undefined
+  },
+  mejorJugadorContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  mejoresJugadoresTitulo: {
+    color: 'white',
+    fontSize: 22,
+    margin: 10,
+  },
+  mejorJugadorTexto: {
+    color: 'white',
+    fontSize: 16,
+    margin: 5,
+    marginHorizontal: 10
+  },
+  listadoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 5
   }
 });
