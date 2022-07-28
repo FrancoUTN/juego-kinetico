@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 
+const ladoCuadradoSuperheroe = 75;
+
 export default function App() {
   const [subscription, setSubscription] = useState(null);
   const [valorDeRightYTop, setValorDeRightYTop] = useState({
     right: 0,
     top: 0
+  });
+  const [dimensiones, setDimensiones] = useState({
+    ancho: 0,
+    alto: 0
   });
 
   const _slow = () => {
@@ -17,18 +23,44 @@ export default function App() {
     Accelerometer.setUpdateInterval(50);
   };
 
+  useEffect(
+    () => {
+      if (dimensiones.ancho > 0 && dimensiones.alto > 0) {
+        const mitadDelAncho = dimensiones.ancho / 2;
+        const mitadDelAlto = dimensiones.alto / 2;
+        // "- 5" porque el ícono tiene áreas ligeramente menores al cuadrado total
+        const mitadDelSuperheroe = (ladoCuadradoSuperheroe - 15) / 2;
+        const xPared = Math.abs(valorDeRightYTop.right) + mitadDelSuperheroe;
+        const yPared = Math.abs(valorDeRightYTop.top) + mitadDelSuperheroe;
+
+        // console.log(mitadDelAncho);
+        // console.log(xPared);
+
+        if (xPared >= mitadDelAncho || yPared >= mitadDelAlto) {
+          console.log('PERDISTE!');
+          _unsubscribe();
+        }
+      }
+    }
+  , [valorDeRightYTop]);
+
   const _subscribe = () => {
+    // Accelerometer.setUpdateInterval(2000);
     Accelerometer.setUpdateInterval(70);
     setSubscription(
-      Accelerometer.addListener(accelerometerData => {        
+      Accelerometer.addListener(accelerometerData => {
         const nuevoX = generarMovimiento(accelerometerData.x);
         const nuevoY = generarMovimiento(accelerometerData.y);
 
-        setValorDeRightYTop(valorAnterior => ({
+        setValorDeRightYTop(valorAnterior => {
+          // console.log(valorAnterior);
+          return({
+            
             right: valorAnterior.right + nuevoX,
             top: valorAnterior.top + nuevoY,
-          })
+          })}
         );
+
       })
     );
   };
@@ -91,11 +123,18 @@ export default function App() {
         </View>
       </View>
 
-      <View style={styles.cuadradoContainer}>
+      <View
+        style={styles.cuadradoContainer}
+        onLayout={(event) => {
+          const {width, height} = event.nativeEvent.layout;
+          setDimensiones({ancho: width, alto: height});
+          console.log(event.nativeEvent.layout);
+        }}
+      >
         <View style={[styles.cuadrado, otrosEstilos]}>
           <Image            
             style={styles.superheroe}
-            source={require('../../assets/spiderman.png')}
+            source={require('../../assets/batman.png')}
           />
         </View>
       </View>
@@ -103,8 +142,6 @@ export default function App() {
     </View>
   );
 }
-
-const lado = 75;
 
 const styles = StyleSheet.create({
   container: {
@@ -124,8 +161,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   cuadrado: {
-    width: lado,
-    height: lado
+    width: ladoCuadradoSuperheroe,
+    height: ladoCuadradoSuperheroe
   },
   text: {
     textAlign: 'center',
