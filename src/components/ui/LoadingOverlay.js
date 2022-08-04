@@ -21,5 +21,6 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 16,
     marginBottom: 20,
+    color: 'white',
   },
 });
