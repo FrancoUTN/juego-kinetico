@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   label: {
+    fontFamily: 'AlegreyaSC_400Regular',
     color: 'white',
     marginBottom: 4,
   },
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     color: Colors.error500,
   },
   input: {
+    fontFamily: 'AlegreyaSC_400Regular',
     paddingVertical: 8,
     paddingHorizontal: 6,
     backgroundColor: Colors.primary100,

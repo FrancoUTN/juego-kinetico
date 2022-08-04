@@ -296,14 +296,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerTexto: {
+    fontFamily: 'AlegreyaSC_700Bold',
     color: 'white',
     fontSize: 30,
-    fontWeight: 'bold'
   },
   perdisteTexto: {
+    fontFamily: 'AlegreyaSC_700Bold',
     color: Colors.error500,
     fontSize: 50,
-    fontWeight: 'bold',
     margin: 30
   },
   cuadrado: {
@@ -342,11 +342,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   mejoresJugadoresTitulo: {
+    fontFamily: 'AlegreyaSC_400Regular',
     color: 'white',
     fontSize: 22,
     margin: 10,
   },
   mejorJugadorTexto: {
+    fontFamily: 'AlegreyaSC_400Regular',
     color: 'white',
     fontSize: 16,
     margin: 5,

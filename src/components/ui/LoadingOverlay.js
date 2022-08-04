@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   message: {
+    fontFamily: 'AlegreyaSC_400Regular',
     fontSize: 16,
     marginBottom: 20,
     color: 'white',

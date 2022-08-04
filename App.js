@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import Constants from "expo-constants";
 import * as SplashScreen from "expo-splash-screen";
-import { Animated, StyleSheet, Text, View} from "react-native";
+import { Animated, StyleSheet, View} from "react-native";
 
 import { Colors } from './src/constants/styles';
 import LoginScreen from './src/screens/LoginScreen';
@@ -13,6 +13,19 @@ import AuthContextProvider, { AuthContext } from './src/store/auth-context';
 import IconButton from './src/components/ui/IconButton';
 import PersonajesScreen from "./src/screens/PersonajesScreen";
 import ModalScreen from "./src/screens/ModalScreen";
+import {
+  useFonts,
+  AlegreyaSC_400Regular,
+  AlegreyaSC_400Regular_Italic,
+  AlegreyaSC_500Medium,
+  AlegreyaSC_500Medium_Italic,
+  AlegreyaSC_700Bold,
+  AlegreyaSC_700Bold_Italic,
+  AlegreyaSC_800ExtraBold,
+  AlegreyaSC_800ExtraBold_Italic,
+  AlegreyaSC_900Black,
+  AlegreyaSC_900Black_Italic,
+} from '@expo-google-fonts/alegreya-sc';
 
 // Inicializar App y Auth
 import './src/util/auth'
@@ -34,7 +47,12 @@ function AuthStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Ingreso' }}/>
+      <Stack.Screen name="Login" component={LoginScreen} options={{
+        title: 'Ingreso',
+          headerTitleStyle: {
+            fontFamily: 'AlegreyaSC_400Regular'
+          }
+        }}/>
       <Stack.Group screenOptions={{
           presentation: 'modal',
           headerStyle: { backgroundColor: Colors.error500 },
@@ -42,7 +60,12 @@ function AuthStack() {
           contentStyle: { backgroundColor: Colors.error100 },
         }}f
       >
-        <Stack.Screen name="MiModal" component={ModalScreen} options={{ title: 'Error' }}/>
+        <Stack.Screen name="MiModal" component={ModalScreen} options={{
+          title: 'Error',
+          headerTitleStyle: {
+            fontFamily: 'AlegreyaSC_400Regular'
+          } 
+        }}/>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -62,6 +85,9 @@ function AuthenticatedStack() {
         name="Personajes"
         component={PersonajesScreen}
         options={{
+          headerTitleStyle: {
+            fontFamily: 'AlegreyaSC_400Regular'
+          },
           headerRight: ({ tintColor }) => (
             <IconButton
               icon="power"
@@ -76,6 +102,9 @@ function AuthenticatedStack() {
         name="Principal"
         component={PrincipalScreen}
         options={{
+          headerTitleStyle: {
+            fontFamily: 'AlegreyaSC_400Regular'
+          },
           headerRight: ({ tintColor }) => (
             <IconButton
               icon="power"
@@ -116,6 +145,19 @@ function AnimatedSplashScreen({ children, image }) {
   const animation = useMemo(() => new Animated.Value(0), []);
   const [isAppReady, setAppReady] = useState(false);
   const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
+  let [fontsLoaded] = useFonts({
+    AlegreyaSC_400Regular,
+    AlegreyaSC_400Regular_Italic,
+    AlegreyaSC_500Medium,
+    AlegreyaSC_500Medium_Italic,
+    AlegreyaSC_700Bold,
+    AlegreyaSC_700Bold_Italic,
+    AlegreyaSC_800ExtraBold,
+    AlegreyaSC_800ExtraBold_Italic,
+    AlegreyaSC_900Black,
+    AlegreyaSC_900Black_Italic,
+  });
+
 
   const onImageLoaded = useCallback(async () => {
     try {
@@ -140,7 +182,7 @@ function AnimatedSplashScreen({ children, image }) {
   return (
     <View style={{ flex: 1 }}>
       {isAppReady && children}
-      {!isSplashAnimationComplete && (
+      {!isSplashAnimationComplete && fontsLoaded && (
         <Animated.View
           pointerEvents="none"
           style={[

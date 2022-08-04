@@ -16,6 +16,7 @@ export default function ModalScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   texto: {
+    fontFamily: 'AlegreyaSC_400Regular',
     fontSize: 20,
     color: 'white',
     margin: 20
