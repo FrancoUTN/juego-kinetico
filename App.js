@@ -213,7 +213,7 @@ function AnimatedSplashScreen({ children, image }) {
 function MainScreen() {
   return (
     <AuthContextProvider>
-      <StatusBar style="light" />
+      {/* <StatusBar style="light" /> */}
       <Navigation />
     </AuthContextProvider>
   );
