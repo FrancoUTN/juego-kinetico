@@ -132,12 +132,9 @@ function Navigation() {
 
 export default function App() {
   return (
-    <>
-      <StatusBar style="light" />
-      <AnimatedSplashScreen image={require('./assets/splash.png')}>
-        <MainScreen />
-      </AnimatedSplashScreen>
-    </>
+    <AnimatedSplashScreen image={require('./assets/splash.png')}>
+      <MainScreen />
+    </AnimatedSplashScreen>
   );
 }
 
@@ -216,6 +213,7 @@ function AnimatedSplashScreen({ children, image }) {
 function MainScreen() {
   return (
     <AuthContextProvider>
+      <StatusBar style="light" />
       <Navigation />
     </AuthContextProvider>
   );
