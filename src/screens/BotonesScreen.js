@@ -5,11 +5,23 @@ import { Colors } from '../constants/styles';
 
 export default function BotonesScreen({ navigation }) {
   function onDCPressHandler() {
-    navigation.navigate('Personajes');
+    const navConfig = {
+      name: 'Personajes',
+      params: { universo: 'DC' },
+      merge: true,
+    };
+
+    navigation.navigate(navConfig);
   }
 
   function onMarvelPressHandler() {
-    navigation.navigate('Personajes');
+    const navConfig = {
+      name: 'Personajes',
+      params: { universo: 'Marvel' },
+      merge: true,
+    };
+
+    navigation.navigate(navConfig);
   }
 
   return (
