@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: 'AlegreyaSC_400Regular',
-    color: 'white',
+    color: Colors.secondary,
     marginBottom: 4,
   },
   labelInvalid: {
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     fontFamily: 'AlegreyaSC_400Regular',
     paddingVertical: 8,
     paddingHorizontal: 6,
-    backgroundColor: Colors.primary100,
+    backgroundColor: Colors.secondary,
     borderRadius: 4,
     fontSize: 16,
-    color: 'white',
+    color: Colors.primary100,
   },
   inputInvalid: {
     backgroundColor: Colors.error100,

@@ -1,8 +1,8 @@
 export const Colors = {
-  primary100: '#397367',
-  primary500: '#0D1821',
-  primary800: '#0079EF',
-  secondary: '#ACE4AA',
-  error100: '#F68E91',
-  error500: '#ED1D24'
+  primary100: '#000000', // ¡Qué bien queda el negro!
+  primary500: '#0376F2',
+  primary800: '#32353D',
+  secondary: '#FFFFFF',
+  error100: '#FA9F42',
+  error500: '#DB162F'
 }
