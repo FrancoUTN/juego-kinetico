@@ -67,7 +67,7 @@ export default function Principal({route}) {
             _unsubscribe();
             limpiarIntervalo();
 
-            const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
+            const q = query(colRef, orderBy("puntaje", "desc"), limit(5));
             setCargando(true);
             const querySnapshot = await getDocs(q);
 
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   listadoContainer: {
-    flex: 1,
+    flex: .8,
     alignItems: 'center',
     margin: 5
   }
