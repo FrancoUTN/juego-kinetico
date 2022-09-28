@@ -4,6 +4,15 @@ import { Colors } from '../constants/styles';
 export default function PersonajesScreen({ navigation, route }) {
   const universo = route.params?.universo;
   const esDC = universo == 'DC' ? true : false;
+  // Íconos
+  const iconoDC = require('../../assets/dc.png');
+  const iconoBatman = require('../../assets/batman.png');
+  const iconoJoker = require('../../assets/joker.png');
+  const iconoWonderWoman = require('../../assets/wonderwoman.png');
+  const iconoMarvel = require('../../assets/marvel.png');
+  const iconoSpiderman = require('../../assets/spiderman.png');
+  const iconoHulk = require('../../assets/hulk.png');
+  const iconoDeadpool = require('../../assets/deadpool.png');
 
   function onPressHandler(elRequire) {
     const configuracion = {
@@ -18,91 +27,50 @@ export default function PersonajesScreen({ navigation, route }) {
     <View
       style={styles.container}
     >
-    {
-      esDC ?
-      <>
+      <View style={styles.viewUniverso}>
         <Image
-          source={require('../../assets/dc.png')}
+          source={esDC ? iconoDC : iconoMarvel}
           style={styles.franquicia}
         />
-        <View
-          style={styles.containerDC}
+      </View>
+      <View style={styles.viewTexto}>
+        <Text style={styles.texto}>
+          Elige tu personaje:
+        </Text>
+      </View>
+      <View style={styles.viewPersonajes}>
+        <Pressable
+          onPress={() => onPressHandler(esDC ? iconoBatman : iconoSpiderman)}
         >
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/batman.png'))}
-          >
-            <Image
-              source={require('../../assets/batman.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/joker.png'))}
-          >
-            <Image
-              source={require('../../assets/joker.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/wonderwoman.png'))}
-          >
-            <Image
-              source={require('../../assets/wonderwoman.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-        </View>
-      </>
-      :
-      <>
-        <View style={styles.viewUniverso}>
           <Image
-            source={require('../../assets/marvel.png')}
-            style={styles.franquicia}
+            source={esDC ? iconoBatman : iconoSpiderman}
+            style={styles.imagen}
           />
-        </View>
-        <View style={styles.viewTexto}>
-          <Text style={styles.texto}>
-            Elige tu personaje:
-          </Text>
-        </View>
-        <View style={styles.viewPersonajes}>
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/spiderman.png'))}
-          >
-            <Image
-              source={require('../../assets/spiderman.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/hulk.png'))}
-          >
-            <Image
-              source={require('../../assets/hulk.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => onPressHandler(require('../../assets/deadpool.png'))}
-          >
-            <Image
-              source={require('../../assets/deadpool.png')}
-              style={styles.imagen}
-            />
-          </Pressable>
-        </View>
-      </>
-    }
+        </Pressable>
+        <Pressable
+          onPress={() => onPressHandler(esDC ? iconoJoker : iconoHulk)}
+        >
+          <Image
+            source={esDC ? iconoJoker : iconoHulk}
+            style={styles.imagen}
+          />
+        </Pressable>
+        <Pressable
+          onPress={() => onPressHandler(esDC ? iconoWonderWoman : iconoDeadpool)}
+        >
+          <Image
+            source={esDC ? iconoWonderWoman : iconoDeadpool}
+            style={styles.imagen}
+          />
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // alignItems: 'center'
+    flex: 1
   },
   imagen: {
     width: 75,
@@ -112,14 +80,12 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '80%',
     resizeMode: 'contain',
-    // marginHorizontal: 30,
-    // marginTop: 30
+    marginTop: 30
   },
   viewUniverso: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end', // Nada
-    // backgroundColor: Colors.primary800
+    // backgroundColor: 'white'
   },
   viewTexto: {
     flex: 1,
