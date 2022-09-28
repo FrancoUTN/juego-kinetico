@@ -5,11 +5,11 @@ export default function ModalScreen({ route, navigation }) {
   const mensajeError = route.params?.mensajeError;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly' }}>
       <Text style={styles.texto}>
         { mensajeError }
       </Text>
-      <Button onPress={() => navigation.goBack()} title="Regresar" color={Colors.primary500}/>
+      <Button onPress={() => navigation.goBack()} title="De acuerdo." color={Colors.primary500}/>
     </View>
   );
 }
@@ -17,8 +17,8 @@ export default function ModalScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   texto: {
     fontFamily: 'AlegreyaSC_400Regular',
-    fontSize: 20,
-    color: 'white',
+    fontSize: 36,
+    color: 'black',
     margin: 20
   }
 });

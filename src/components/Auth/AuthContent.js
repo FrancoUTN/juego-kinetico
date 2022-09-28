@@ -25,7 +25,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
     if ( !emailIsValid || !passwordIsValid ) {      
       navigation.navigate({
         name: 'MiModal',
-        params: { mensajeError: 'Datos inválidos.'}
+        params: { mensajeError: 'Error:\nDatos inválidos.'}
       });
 
       setCredentialsInvalid({
