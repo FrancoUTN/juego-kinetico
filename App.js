@@ -29,6 +29,7 @@ import {
 
 // Inicializar App y Auth
 import './src/util/auth'
+import BotonesScreen from "./src/screens/BotonesScreen";
 
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
@@ -81,6 +82,24 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
+      <Stack.Screen
+        name="Botones"
+        component={BotonesScreen}
+        options={{
+          title: 'Elige universo:',
+          headerTitleStyle: {
+            fontFamily: 'AlegreyaSC_400Regular'
+          },
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="power"
+              color={tintColor}
+              size={24}
+              onPress={authCtx.logout}
+            />
+          ),
+        }}
+      />
       <Stack.Screen
         name="Personajes"
         component={PersonajesScreen}
