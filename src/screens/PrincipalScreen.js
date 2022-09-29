@@ -176,7 +176,7 @@ export default function Principal({route}) {
       puntaje: seconds
     });
 
-    const q = query(colRef, orderBy("puntaje", "desc"), limit(3));
+    const q = query(colRef, orderBy("puntaje", "desc"), limit(5));
     const querySnapshot = await getDocs(q);
 
     traerListado(querySnapshot);    
@@ -239,7 +239,7 @@ export default function Principal({route}) {
               <Text style={styles.perdisteTexto}>
                 ¡Perdiste!
               </Text>
-              <View style={{marginBottom: 40}}>
+              <View style={{marginBottom: 32}}>
                 <Button
                   onPress={guardarResultado}
                 >
@@ -257,7 +257,6 @@ export default function Principal({route}) {
           <View style={[styles.cuadrado, otrosEstilos]}>
             <Image            
               style={styles.superheroe}
-              // source={require('../../assets/batman.png')}
               source={route.params.superheroe}
             />
           </View>
@@ -304,7 +303,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AlegreyaSC_700Bold',
     color: Colors.error500,
     fontSize: 50,
-    margin: 30
+    margin: 20
   },
   cuadrado: {
     width: ladoCuadradoSuperheroe,
@@ -344,8 +343,9 @@ const styles = StyleSheet.create({
   mejoresJugadoresTitulo: {
     fontFamily: 'AlegreyaSC_400Regular',
     color: 'white',
-    fontSize: 22,
+    fontSize: 26,
     margin: 10,
+    textDecorationLine: 'underline'
   },
   mejorJugadorTexto: {
     fontFamily: 'AlegreyaSC_400Regular',
@@ -355,8 +355,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   listadoContainer: {
-    flex: .8,
+    flex: 1.6,
     alignItems: 'center',
-    margin: 5
+    marginTop: 10
   }
 });
