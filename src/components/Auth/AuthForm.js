@@ -1,18 +1,25 @@
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Colors } from '../../constants/styles';
 
 import Button from '../ui/Button';
 import FlatButton from '../ui/FlatButton';
 import Input from './Input';
 
-function AuthForm({ onSubmit, credentialsInvalid }) {
+function AuthForm({ onSubmit, credentialsInvalid, correo, clave }) {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
-
   const {
     email: emailIsInvalid,
     password: passwordIsInvalid
   } = credentialsInvalid;
+
+  useEffect(
+    () => {
+      setEnteredEmail(correo);
+      setEnteredPassword(clave);
+    }, [correo, clave]
+  );
 
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
@@ -32,43 +39,27 @@ function AuthForm({ onSubmit, credentialsInvalid }) {
     });
   }
 
-  function accesoAdminHandler() {
-    setEnteredEmail('admin@admin.com');
-    setEnteredPassword('111111');
-  }
-
-  function accesoInvitadoHandler() {
-    setEnteredEmail('invitado@invitado.com');
-    setEnteredPassword('222222');
-  }
-
-  function accesoUsuarioHandler() {
-    setEnteredEmail('usuario@usuario.com');
-    setEnteredPassword('333333');
-  }
-
-  function accesoAnonimoHandler() {
-    setEnteredEmail('anonimo@anonimo.com');
-    setEnteredPassword('444444');
-  }
-
-  function accesoTesterHandler() {
-    setEnteredEmail('tester@tester.com');
-    setEnteredPassword('555555');
-  }
-
   return (
     <View style={styles.form}>
+      <View style={styles.viewBienvenido}>
+        <Text style={styles.textBienvenido}>
+          ¡Ojo con los bordes
+          {
+            enteredEmail &&
+            ', ' + enteredEmail.substring(0, enteredEmail.indexOf("@"))}
+          !
+        </Text>
+      </View>
       <View>
         <Input
-          label="Correo electrónico"
+          label="Usuario"
           onUpdateValue={updateInputValueHandler.bind(this, 'email')}
           value={enteredEmail}
           keyboardType="email-address"
           isInvalid={emailIsInvalid}
         />
         <Input
-          label="Contraseña"
+          label="Clave"
           onUpdateValue={updateInputValueHandler.bind(this, 'password')}
           secure
           value={enteredPassword}
@@ -76,36 +67,9 @@ function AuthForm({ onSubmit, credentialsInvalid }) {
         />
         <View style={styles.buttons}>
           <Button onPress={submitHandler}>
-            ¡A jugar!
+            Jugar
           </Button>
         </View>
-
-        <View style={styles.buttons}>
-          <FlatButton onPress={accesoAdminHandler}>
-            Acceso admin
-          </FlatButton>
-        </View>
-        <View style={styles.buttons}>
-          <FlatButton onPress={accesoInvitadoHandler} >
-            Acceso invitado
-          </FlatButton>
-        </View>
-        <View style={styles.buttons}>
-          <FlatButton onPress={accesoUsuarioHandler} >
-            Acceso usuario
-          </FlatButton>
-        </View>        
-        <View style={styles.buttons}>
-          <FlatButton onPress={accesoAnonimoHandler} >
-            Acceso anónimo
-          </FlatButton>
-        </View>
-        <View style={styles.buttons}>
-          <FlatButton onPress={accesoTesterHandler} >
-            Acceso tester
-          </FlatButton>
-        </View>
-
       </View>
     </View>
   );
@@ -115,6 +79,17 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   buttons: {
-    marginTop: 12,
+    marginTop: 30,
   },
+  viewBienvenido: {
+    marginTop: 16,
+    marginBottom: 20,
+    height: 80
+  },
+  textBienvenido: {
+    color: Colors.secondary,
+    fontSize: 30,
+    fontFamily: 'AlegreyaSC_400Regular',
+    textAlign: 'center'
+  }
 });

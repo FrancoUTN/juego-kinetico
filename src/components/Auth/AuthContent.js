@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { FloatingAction } from "react-native-floating-action";
 
 import AuthForm from './AuthForm';
 import { Colors } from '../../constants/styles';
@@ -13,6 +14,43 @@ function AuthContent({ isLogin, onAuthenticate }) {
     password: false
   });
 
+  const [correo, setCorreo] = useState('');
+  const [clave, setClave] = useState('');
+
+  const valoresAccion = {
+    icon: require("../../../assets/arrow.png"),
+    color: Colors.primary500,
+    textColor: Colors.primary800
+  };
+
+  const acciones = [
+    {
+      text: "Administrador",
+      name: "admin",
+      ...valoresAccion
+    },
+    {
+      text: "Invitado",
+      name: "invitado",
+      ...valoresAccion
+    },
+    {
+      text: "Usuario",
+      name: "usuario",
+      ...valoresAccion
+    },
+    {
+      text: "Anónimo",
+      name: "anonimo",
+      ...valoresAccion
+    },
+    {
+      text: "Tester",
+      name: "tester",
+      ...valoresAccion
+    },
+  ];
+
   function submitHandler(credentials) {
     let { email, password } = credentials;
 
@@ -25,7 +63,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
     if ( !emailIsValid || !passwordIsValid ) {      
       navigation.navigate({
         name: 'MiModal',
-        params: { mensajeError: 'Error:\nDatos inválidos.'}
+        params: { mensajeError: 'Datos inválidos.'}
       });
 
       setCredentialsInvalid({
@@ -39,6 +77,31 @@ function AuthContent({ isLogin, onAuthenticate }) {
     onAuthenticate({ email, password });
   }
 
+  function onPressItemHandler(name) {
+    switch (name) {
+      case 'admin':
+        setCorreo('admin@admin.com');
+        setClave('111111');
+        break;
+      case 'invitado':
+        setCorreo('invitado@invitado.com');
+        setClave('222222');
+        break;
+      case 'usuario':
+        setCorreo('usuario@usuario.com');
+        setClave('333333');
+        break;
+      case 'anonimo':
+        setCorreo('anonimo@anonimo.com');
+        setClave('444444');
+        break;
+      case 'tester':
+        setCorreo('tester@tester.com');
+        setClave('555555');
+        break;
+    }
+  }
+
   return (
     <>
       <View style={styles.authContent}>
@@ -46,8 +109,20 @@ function AuthContent({ isLogin, onAuthenticate }) {
           isLogin={isLogin}
           onSubmit={submitHandler}
           credentialsInvalid={credentialsInvalid}
+          correo={correo}
+          clave={clave}
         />
       </View>
+      <FloatingAction
+        actions={acciones}
+        color={Colors.primary500}
+        buttonSize={56}
+        distanceToEdge={{vertical:22,horizontal:28}}
+        onPressItem={name => onPressItemHandler(name)}
+        floatingIcon={require("../../../assets/user.png")}
+        iconWidth={26}
+        iconHeight={26}
+      />
     </>
   );
 }
@@ -59,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 64,
     marginHorizontal: 32,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 20,
     backgroundColor: Colors.primary500,
     elevation: 2,
     shadowColor: 'black',
@@ -70,4 +145,20 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 8,
   },
+  accesosContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: Colors.primary500,
+    marginTop: 120,
+    marginBottom: 30,
+    marginHorizontal: 50,
+    padding: 30,
+    height: 96,
+    borderRadius: 10,
+  },
+  accesosTexto: {
+    fontSize: 20,
+    color: 'white'
+  }
 });
