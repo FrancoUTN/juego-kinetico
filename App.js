@@ -150,17 +150,28 @@ function Navigation() {
 }
 
 export default function App() {
+  const [animacionFinalizada, setAnimacionFinalizada] = useState(false);
   return (
-    <AnimatedSplashScreen image={require('./assets/splash.png')}>
-      <MainScreen />
-    </AnimatedSplashScreen>
+    <>
+    {
+      !animacionFinalizada ?
+      <AnimatedSplashScreen
+        image={require('./assets/splash.png')}
+        onFinalizada={() => setAnimacionFinalizada(true)}        
+      />
+      :
+      <>
+        <StatusBar style="light" />
+        <MainScreen />
+      </>
+    }
+    </>
   );
 }
 
-function AnimatedSplashScreen({ children, image }) {
+function AnimatedSplashScreen({ onFinalizada, image }) {
   const animation = useMemo(() => new Animated.Value(0), []);
   const [isAppReady, setAppReady] = useState(false);
-  const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
   let [fontsLoaded] = useFonts({
     AlegreyaSC_400Regular,
     AlegreyaSC_400Regular_Italic,
@@ -173,8 +184,6 @@ function AnimatedSplashScreen({ children, image }) {
     AlegreyaSC_900Black,
     AlegreyaSC_900Black_Italic,
   });
-
-
   const onImageLoaded = useCallback(async () => {
     try {
       setTimeout(() => SplashScreen.hideAsync(), 300);
@@ -191,14 +200,13 @@ function AnimatedSplashScreen({ children, image }) {
         toValue: 1000,
         duration: 1200,
         useNativeDriver: true,
-      }).start(() => setAnimationComplete(true));
+      }).start(() => onFinalizada());
     }
   }, [isAppReady]);
 
   return (
     <View style={{ flex: 1 }}>
-      {isAppReady && children}
-      {!isSplashAnimationComplete && fontsLoaded && (
+      {fontsLoaded && (
         <Animated.View
           pointerEvents="none"
           style={[
@@ -232,7 +240,6 @@ function AnimatedSplashScreen({ children, image }) {
 function MainScreen() {
   return (
     <AuthContextProvider>
-      {/* <StatusBar style="light" /> */}
       <Navigation />
     </AuthContextProvider>
   );
