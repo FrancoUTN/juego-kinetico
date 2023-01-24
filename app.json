@@ -2,7 +2,7 @@
   "expo": {
     "name": "juego-kinetico",
     "slug": "juego-kinetico",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,11 +25,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0000aa"
       },
-      "package": "com.rnativo.juegokinetico"
+      "package": "com.cfrancodev.juegokinetico"
     },
     "extra": {
       "eas": {
-        "projectId": "1191be85-a087-4538-b191-de66848e5bdc"
+        "projectId": "bcd60849-131d-44e6-9f0f-a2e56d0067ea"
       }
     }
   }
